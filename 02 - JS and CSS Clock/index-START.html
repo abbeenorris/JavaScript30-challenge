@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -62,12 +62,33 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
     }
 
-  </style>
+</style>
 
-  <script>
+<script>
+  const secondHand = document.querySelector('.second-hand');
+  const minuteHand = document.querySelector('.min-hand');
+  const hourHand = document.querySelector('.hour-hand');
 
+  function setDate() {
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const minute = now.getMinutes();
+    const hour = now.getHours();
+    const secondsDegrees = ((seconds / 60) * 360) + 90;
+    const minuteDegrees = ((minute / 60) * 360) + 90;
+    const hourDegrees = ((hour / 12) * 360) + 90; 
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+    minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+    hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+  }
+
+  setInterval(setDate, 1000);
 
   </script>
 </body>
