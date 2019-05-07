@@ -32,9 +32,37 @@
     text-shadow: 10px 10px 0 rgba(0,0,0,1);
     font-size: 100px;
   }
-  </style>
+</style>
 
 <script>
+
+  const hero = document.querySelector('.hero');
+  const text = document.querySelector('h1');
+  const walk = 100; //100px but 50px is heighest and -50px is lowest 
+
+  function shadow(e) {
+    const width = hero.offsetWidth; 
+    const height = hero.offsetHeight; 
+    let x = e.offsetX; //let because need to reassign values
+    let y = e.offsetY;
+
+    if (this !== e.target) { // adds values ontop of hero values
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+
+    const xwalk = Math.round((x / width * walk) - (walk / 2));
+    const ywalk = Math.round((y / height * walk) - (walk / 2));
+
+    text.style.textShadow = `
+      ${xwalk}px ${ywalk}px 0 pink,
+      ${xwalk * -1}px ${ywalk}px 0 blue,
+      ${ywalk}px ${xwalk * -1}px 0 yellow,
+      ${ywalk * -1}px ${xwalk}px 0 red
+    `;
+  }
+
+  hero.addEventListener('mousemove', shadow);
 </script>
 </body>
 </html>
