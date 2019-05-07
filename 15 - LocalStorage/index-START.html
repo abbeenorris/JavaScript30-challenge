@@ -28,7 +28,47 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || []; //on page load check if anything in localstorage
+
+  function addItem(e) {
+    e.preventDefault();
+    const text = (this.querySelector('[name=item]')).value; 
+    const item = {
+      text,
+      done: false
+    };
+
+    items.push(item);
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items)); //put into localstorage -  need to convert if passing anything but a string
+    this.reset();
+  } 
+
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `
+        <li>
+        <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
+        <label for="item${i}">${plate.text}</label>
+        </li>
+      `;
+    }).join('');
+  }
+  
+  function toggleDone(e) {
+    if (!e.target.matches('input')) return; //only logs checkbox click
+    const el = e.target; //what's clicked - target
+    const index = el.dataset.index; //index of item - number in the list data-index=${i}
+    items[index].done = !items[index].done; //changes property to opposit - flase/true for checkboxes
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList); 
+  }
+
+  addItems.addEventListener('submit', addItem);
+  itemsList.addEventListener('click', toggleDone);
+  populateList(items, itemsList);
+
+  // Go to application in dev tools - local storage and click the file to see what's being stored. 
 
 </script>
 
