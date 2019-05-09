@@ -43,6 +43,28 @@
 <button></button>
 <script>
 
+  const divs = document.querySelectorAll('div');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    e.stopPropagation(); //stops bubbling 
+    console.log(this);
+  }
+
+  divs.forEach(div => div.addEventListener('click', logText, {
+    capture: false, //false is bubble upwards, true is bubble downwards
+    once: true //Only allows event once
+  }));
+  //bubbling is when events are also logged on parent nodes as well as the one you're actually clicking on
+
+  const button = document.querySelector('button');
+
+  button.addEventListener('click', () => {
+    console.log('clicked');
+  }, {
+    once: true
+  });
+  //example of only allow one click
 </script>
 </body>
 </html>
