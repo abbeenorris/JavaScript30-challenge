@@ -10,7 +10,34 @@
   </div>
 
 <script>
-  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; //uses webkit for chrome
+
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true; //returns and populates 
+
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  recognition.addEventListener('result', e => {
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join('');
+
+      p.textContent = transcript; //puts speech into dom
+      if(e.results[0].isFinal) {
+        p = document.createElement('p'); //overwrites above p to add a new p every time thres a break in speech
+        words.appendChild(p);
+      }
+      if (transcript.includes('get the weather')) {
+        console.log('getting weather');
+      }
+      console.log(transcript);
+  });
+
+  recognition.addEventListener('end', recognition.start); //keeps running function so keeps lisitening
+  recognition.start();
 
 
 </script>
